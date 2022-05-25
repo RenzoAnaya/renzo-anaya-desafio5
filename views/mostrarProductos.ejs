@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+</head>
+<body>
+    <h1>Productos</h1>
+    <button><a href="../">Subir nuevo producto</a></button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Photo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% products.forEach(file=>{ %>
+                <tr>
+                    <th scope="row"><%= file.id %></th>
+                    <td><%= file.name %></td>
+                    <td><%= file.price %></td>
+                    <td><img style="height:50px; width: 50px;" src=" <%= file.photo %>"></td>
+                </tr>
+            <%}) %>
+        </tbody>
+    </table>
+    
+</body>
+</html>
+
+
