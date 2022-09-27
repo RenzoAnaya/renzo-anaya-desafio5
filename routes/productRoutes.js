@@ -4,7 +4,18 @@ const Container = require('../container')
 const file = './products.txt';
 const containerProducts = new Container();
 const multer = require('multer');
-const fs = require("fs")
+const fs = require("fs");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+ 
+})
+router.use(multer({storage}).single('thumbnail'));
 
 
 let products = JSON.parse(fs.readFileSync(file,'utf-8'));
@@ -29,6 +40,7 @@ let products = JSON.parse(fs.readFileSync(file,'utf-8'));
 // );
 
 router.get('/', (req,res) => {
+  const products = containerProducts.getAll(file)
   res.render('mostrarProductos',{
     products
   } )
@@ -36,14 +48,11 @@ router.get('/', (req,res) => {
 
 router.post('/', (req, res) => {
   const  body  = req.body;
+  const photo = req.file;
   console.log(body)
-  //const photo = req.file;
-  // // antes de guardar el objeto le añado la propiedad para que se pueda acceder a la foto.
-  //body.thumbnail = photo.filename;
-  body.thumbnail = body.photo
-  containerProducts.save(body);
-  products = JSON.parse(fs.readFileSync(file,'utf-8'));
-  res.json({message: 'Producto guardado', producto: body});
+  body.thumbnail =  '/uploads/'+photo.filename;
+  containerProducts.saveProduct(body, file);
+  res.redirect('/api/products');
 }
 );
 

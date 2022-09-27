@@ -6,22 +6,24 @@ const fs = require ('fs');
 const PORT = 8080;
 
 
-//** Middlewares */
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// express.static hace publicos los archivos estaticos (pej:css-html-jpg) 
-// que esten es la ruta que yo le indique.
-//app.use(express.static(__dirname + "/public"));
+
+app.use(express.static(__dirname + '/public'));
+app.set('views', './views');
+app.set('view engine', 'ejs');
+
+
+
 app.use('/api/products', routeProducts);
-app.set('views', './views')
-app.set('view engine', 'ejs')
+
 
 app.get('/',(req,res)=>{
-    res.render('index',{
-        title:"Productos Renzo"
-    })
-})
+    res.redirect('/api/products')
+}
+);
 
 
 function onInit() {
